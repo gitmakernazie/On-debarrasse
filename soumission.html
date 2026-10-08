@@ -237,18 +237,18 @@ form.addEventListener('submit', async (event) => {
   status.textContent = 'Envoi de votre demande...';
 
   const data = {
-    nom: form.nom.value,
-    telephone: form.telephone.value,
-    email: form.email.value,
-    adresse: form.adresse.value,
-    secteur: form.secteur.value,
-    volume: form.volume.value,
-    description: form.description.value,
-    date_souhaitee: form.date_souhaitee.value || null,
-    plage_horaire: form.plage_horaire.value || null,
-    commentaires: form.commentaires?.value || null,
-    statut: 'nouvelle'
-  };
+  nom: form.elements['nom'].value,
+  telephone: form.elements['telephone'].value,
+  email: form.elements['courriel'].value,
+  adresse: form.elements['adresse'].value,
+  secteur: form.elements['ville'].value,
+  volume: form.elements['volume'].value,
+  description: form.elements['description'].value,
+  date_souhaitee: form.elements['date']?.value || null,
+  plage_horaire: form.elements['plage_horaire']?.value || null,
+  commentaires: form.elements['commentaires']?.value || null,
+  statut: 'nouvelle'
+};
 
   const response = await fetch(
     'https://lizpwezdifwpgkdqpfsp.supabase.co/rest/v1/demande',
