@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#181918" name="theme-color"/>
 <meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." name="description"/>
-<meta content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; form-action 'none'; base-uri 'none'" http-equiv="Content-Security-Policy"/>
+<meta content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' blob: data:; connect-src https://lizpwezdifwpgkdqpfsp.supabase.co; form-action 'none'; base-uri 'none'" http-equiv="Content-Security-Policy"/>
 <title>On Débarrasse | Soumission pour votre débarras à Québec</title>
 <style>
 :root{--ink:#181918;--soft:#f4f5f1;--muted:#60635c;--line:#dedfd8;--accent:#d6fa46}
@@ -243,7 +243,7 @@ form.addEventListener('submit', async (event) => {
   adresse: form.elements['adresse'].value,
   secteur: form.elements['ville'].value,
   volume: form.elements['volume'].value,
-  description: form.elements['description'].value,
+  description: form.elements['commentaires']?.value || null,
   date_souhaitee: form.elements['date']?.value || null,
   plage_horaire: form.elements['plage_horaire']?.value || null,
   commentaires: form.elements['commentaires']?.value || null,
