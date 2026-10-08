@@ -169,7 +169,7 @@ header :focus-visible,.contact :focus-visible,.aside :focus-visible{outline-colo
 <main class="wrap" id="contenu">
 <div class="intro"><p class="eyebrow">Votre projet commence ici</p><h1>Obtenir une soumission</h1><p>Présentez-nous votre besoin et les objets à retirer, en quelques étapes simples.</p></div>
 <div class="layout">
-<form aria-describedby="demo-notice" aria-label="Demande de soumission" class="form-card" data-od-mode="demo" data-od-success-event="generate_lead" id="quote-form" onsubmit="return false;">
+<form aria-describedby="demo-notice" aria-label="Demande de soumission" class="form-card" data-od-mode="demo" data-od-success-event="generate_lead" id="quote-form">
 <p class="demo" id="demo-notice"><strong>Interface de démonstration.</strong> Aucun envoi n’est activé. Les renseignements et les photos restent dans cette page et ne sont ni transmis ni enregistrés par le site.</p>
 <p class="required-note">Les champs marqués d’un * sont obligatoires pour tester l’interface.</p>
 <fieldset><legend><span aria-hidden="true" class="number">01</span>Vos coordonnées</legend><div class="grid">
@@ -191,7 +191,7 @@ header :focus-visible,.contact :focus-visible,.aside :focus-visible{outline-colo
 <fieldset><legend><span aria-hidden="true" class="number">03</span>Vos photos <span class="optional">(facultatif)</span></legend>
 <div class="upload"><div aria-hidden="true" class="upload-symbol">＋</div><label for="photos">Ajouter plusieurs photos</label><p id="photos-help">Photographiez les objets et les espaces à vider. Vous pouvez ajouter des images en plusieurs fois et retirer celles que vous ne souhaitez pas conserver.</p><input accept="image/*" aria-describedby="photos-help photo-message" id="photos" multiple="" type="file"/><p class="photo-message" id="photo-message" role="status">Aucune photo sélectionnée. Aperçus locaux uniquement.</p><div aria-label="Photos sélectionnées" class="photos" id="previews"></div></div>
 </fieldset>
-<div class="submit-area"><button class="submit" id="send" type="button">Envoyer ma demande <span aria-hidden="true">↗</span></button><p class="submit-note">Mode démonstration : ce bouton n’envoie aucune demande.</p><div aria-live="polite" class="status" id="status" role="status"></div><noscript><p class="help">JavaScript est désactivé : les aperçus locaux et la simulation ne sont pas disponibles. Aucun envoi n’est possible.</p></noscript></div>
+<div class="submit-area"><button class="submit" id="send" type="submit">Envoyer ma demande <span aria-hidden="true">↗</span></button><p class="submit-note">Mode démonstration : ce bouton n’envoie aucune demande.</p><div aria-live="polite" class="status" id="status" role="status"></div><noscript><p class="help">JavaScript est désactivé : les aperçus locaux et la simulation ne sont pas disponibles. Aucun envoi n’est possible.</p></noscript></div>
 </form>
 <aside aria-labelledby="tips-title" class="aside"><h2 id="tips-title">Quelques détails.<br/>Une estimation plus claire.</h2><p>Préparez les informations qui nous permettront de comprendre votre débarras.</p><ul class="tips"><li><span aria-hidden="true">↗</span>Une vue d’ensemble des objets</li><li><span aria-hidden="true">↗</span>Les contraintes d’accès</li><li><span aria-hidden="true">↗</span>Votre date préférée</li></ul><p class="local">Cette page n’est reliée à aucun service externe. Vos photos ne quittent pas votre appareil.</p></aside>
 </div>
