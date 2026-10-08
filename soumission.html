@@ -229,11 +229,49 @@ picker.addEventListener('change', () => {
  picker.value = '';
  updatePhotoMessage(rejected ? 'Seuls les fichiers image sont acceptés.' : '');
 });
-form.addEventListener('submit', event => event.preventDefault());
-document.getElementById('send').addEventListener('click', () => {
- status.textContent = '';
- if (!form.reportValidity()) return;
- status.textContent = 'Nous allons confirmer votre date et vous contacter rapidement.';
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  if (!form.reportValidity()) return;
+
+  status.textContent = 'Envoi de votre demande...';
+
+  const data = {
+    nom: form.nom.value,
+    telephone: form.telephone.value,
+    email: form.email.value,
+    adresse: form.adresse.value,
+    secteur: form.secteur.value,
+    volume: form.volume.value,
+    description: form.description.value,
+    date_souhaitee: form.date_souhaitee.value || null,
+    plage_horaire: form.plage_horaire.value || null,
+    commentaires: form.commentaires?.value || null,
+    statut: 'nouvelle'
+  };
+
+  const response = await fetch(
+    'https://lizpwezdifwpgkdqpfsp.supabase.co/rest/v1/demande',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'sb_publishable_rMsK8JKSPK8pOzqdO5AUhw_QCbIA-Nr',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    }
+  );
+
+  if (!response.ok) {
+    status.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+    return;
+  }
+
+  status.textContent =
+    'Demande envoyée ! Nous allons confirmer votre date et vous contacter rapidement.';
+
+  form.reset();
 });
 window.addEventListener('pagehide', () => { for (const item of selected.values()) URL.revokeObjectURL(item.url); selected.clear(); previews.replaceChildren(); picker.value = ''; updatePhotoMessage(); });
 </script>
