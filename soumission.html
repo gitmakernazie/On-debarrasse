@@ -234,12 +234,6 @@ picker.addEventListener('change', () => {
  picker.value = '';
  updatePhotoMessage(rejected ? 'Seuls les fichiers image sont acceptés.' : '');
 });
-form.addEventListener('submit', event => event.preventDefault());
-document.getElementById('send').addEventListener('click', () => {
- status.textContent = '';
- if (!form.reportValidity()) return;
- status.textContent = 'Nous allons confirmer votre date et vous contacter rapidement.';
-});
 window.addEventListener('pagehide', () => { for (const item of selected.values()) URL.revokeObjectURL(item.url); selected.clear(); previews.replaceChildren(); picker.value = ''; updatePhotoMessage(); });
 </script>
 <script data-od-measurement="disabled">
