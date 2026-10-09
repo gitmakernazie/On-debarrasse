@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#181918" name="theme-color"/>
 <meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." name="description"/>
-<meta content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'none'; form-action 'none'; base-uri 'none'" http-equiv="Content-Security-Policy"/>
+<meta content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' blob: data:; connect-src https://lizpwezdfiwgpkdqpfsp.supabase.co; form-action 'none'; base-uri 'none'" http-equiv="Content-Security-Policy"/>
 <title>On Débarrasse | Soumission pour votre débarras à Québec</title>
 <style>
 :root{--ink:#181918;--soft:#f4f5f1;--muted:#60635c;--line:#dedfd8;--accent:#d6fa46}
@@ -167,6 +167,8 @@ footer .footer-contact{display:flex;flex-wrap:wrap;align-items:center;justify-co
 footer .footer-contact a{font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-color:#98e619;text-decoration-thickness:3px;text-underline-offset:4px;display:inline-flex;align-items:center;min-height:44px;transition:color .2s ease}
 footer .footer-contact a:hover{color:#527000}
 @media(max-width:600px){footer .footer-contact{flex-direction:column;align-items:flex-start;gap:0;font-size:16px!important}footer .footer-contact a{min-height:48px}}
+
+.submit:disabled{opacity:.65;cursor:wait;transform:none}
 </style>
 <meta content="noindex, follow" name="robots"/><meta content="fr_CA" property="og:locale"/><meta content="website" property="og:type"/><meta content="On Débarrasse" property="og:site_name"/><meta content="On Débarrasse | Soumission pour votre débarras à Québec" property="og:title"/><meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." property="og:description"/><meta content="summary" name="twitter:card"/><meta content="On Débarrasse | Soumission pour votre débarras à Québec" name="twitter:title"/><meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." name="twitter:description"/></head>
 <body>
@@ -196,6 +198,7 @@ footer .footer-contact a:hover{color:#527000}
 <fieldset><legend><span aria-hidden="true" class="number">03</span>Vos photos <span class="optional">(facultatif)</span></legend>
 <div class="upload"><div aria-hidden="true" class="upload-symbol">＋</div><label for="photos">Ajouter plusieurs photos</label><p id="photos-help">Photographiez les objets et les espaces à vider. Vous pouvez ajouter des images en plusieurs fois et retirer celles que vous ne souhaitez pas conserver.</p><input accept="image/*" aria-describedby="photos-help photo-message" id="photos" multiple="" type="file"/><p class="photo-message" id="photo-message" role="status">Aucune photo sélectionnée. Aperçus locaux uniquement.</p><div aria-label="Photos sélectionnées" class="photos" id="previews"></div></div>
 </fieldset>
+<div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Ne pas remplir<input autocomplete="off" name="website" tabindex="-1" type="text"/></label></div>
 <div class="submit-area"><button class="submit" id="send" type="button">Envoyer ma demande <span aria-hidden="true">↗</span></button><div aria-live="polite" class="status" id="status" role="status"></div><noscript><p class="help">JavaScript est désactivé : les aperçus locaux et la simulation ne sont pas disponibles. Aucun envoi n’est possible.</p></noscript></div>
 </form>
 <aside aria-labelledby="tips-title" class="aside"><h2 id="tips-title">Quelques détails.<br/>Une estimation plus claire.</h2><p>Préparez les informations qui nous permettront de comprendre votre débarras.</p><ul class="tips"><li><span aria-hidden="true">↗</span>Une vue d’ensemble des objets</li><li><span aria-hidden="true">↗</span>Les contraintes d’accès</li><li><span aria-hidden="true">↗</span>Votre date préférée</li></ul><p class="local">Cette page n’est reliée à aucun service externe. Vos photos ne quittent pas votre appareil.</p></aside>
@@ -233,6 +236,76 @@ picker.addEventListener('change', () => {
  }
  picker.value = '';
  updatePhotoMessage(rejected ? 'Seuls les fichiers image sont acceptés.' : '');
+});
+form.addEventListener('submit', event => event.preventDefault());
+// Envoi vers Supabase (clé publique : l'accès est limité à l'ajout de demandes par des règles côté base de données).
+const SUPABASE_URL = 'https://lizpwezdfiwgpkdqpfsp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_rMsK8JKSPK8pOzqdO5AUhw_QCbIA-Nr';
+const sendButton = document.getElementById('send');
+let sending = false;
+function newId() {
+ if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+ const b = crypto.getRandomValues(new Uint8Array(16)); b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+ const h = [...b].map(x => x.toString(16).padStart(2, '0')).join('');
+ return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
+}
+async function shrink(file) {
+ try {
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file;
+  const bmp = await createImageBitmap(file);
+  const ratio = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  if (ratio === 1 && file.size < 1500000) return file;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bmp.width * ratio); canvas.height = Math.round(bmp.height * ratio);
+  canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height);
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.82));
+  return blob && blob.size < file.size ? blob : file;
+ } catch (e) { return file; }
+}
+async function uploadPhoto(id, index, file) {
+ const blob = await shrink(file);
+ const type = blob.type || 'image/jpeg';
+ const ext = type === 'image/jpeg' ? 'jpg' : (type.split('/')[1] || 'jpg').replace(/[^a-z0-9]/g, '');
+ const path = id + '/' + (index + 1) + '.' + ext;
+ const response = await fetch(SUPABASE_URL + '/storage/v1/object/soumissions-photos/' + path, {
+  method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': type }, body: blob
+ });
+ if (!response.ok) throw new Error('photo');
+ return path;
+}
+sendButton.addEventListener('click', async () => {
+ if (sending) return;
+ status.textContent = '';
+ if (!form.reportValidity()) return;
+ const done = 'Merci ! Votre demande a bien été envoyée. Nous allons confirmer votre date et vous contacter rapidement.';
+ if (form.elements.website && form.elements.website.value) { status.textContent = done; return; }
+ sending = true; sendButton.disabled = true;
+ status.textContent = 'Envoi en cours… Merci de patienter.';
+ try {
+  const id = newId();
+  const files = [...selected.values()].slice(0, 10).map(item => item.file);
+  const photos = await Promise.all(files.map((file, i) => uploadPhoto(id, i, file)));
+  const value = name => (form.elements[name].value || '').trim();
+  const row = {
+   nom: value('nom'), telephone: value('telephone'), email: value('courriel'), adresse: value('adresse'), ville: value('ville'),
+   type_debarras: value('type'), volume: value('volume'), escaliers: value('escaliers'), etage: value('etage') || null,
+   date_souhaitee: value('date') || null, plage_horaire: value('plage_horaire') || null, commentaires: value('commentaires') || null, photos
+  };
+  const response = await fetch(SUPABASE_URL + '/rest/v1/demande', {
+   method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(row)
+  });
+  if (!response.ok) throw new Error('envoi');
+  status.textContent = done;
+  form.reset();
+  for (const item of selected.values()) URL.revokeObjectURL(item.url);
+  selected.clear(); previews.replaceChildren(); updatePhotoMessage();
+  if (window.OnDebarrasseMeasurement) window.OnDebarrasseMeasurement.formSuccess({ success: true, demo: false, event_id: id });
+  status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+ } catch (error) {
+  status.textContent = 'Votre demande n’a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou appelez-nous au 438 521-2310.';
+ } finally {
+  sending = false; sendButton.disabled = false;
+ }
 });
 window.addEventListener('pagehide', () => { for (const item of selected.values()) URL.revokeObjectURL(item.url); selected.clear(); previews.replaceChildren(); picker.value = ''; updatePhotoMessage(); });
 </script>
