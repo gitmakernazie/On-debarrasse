@@ -750,6 +750,7 @@ h1{font-size:30px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
 .pin i{position:absolute;inset:0;background:var(--c);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px #0006}
 .pin b{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;opacity:.9}
 .pin.approx i{border-style:dashed}
+.pin.depot i{border-color:var(--green)}
 .leaflet-popup-content{margin:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.45;min-width:200px}
 .pop h3{margin:0 0 4px;font-size:16px}
 .pop p{margin:2px 0}
@@ -1032,6 +1033,9 @@ $('tab-list').addEventListener('click', () => setTab(false));
 $('tab-map').addEventListener('click', () => setTab(true));
 
 /* ---------- carte ---------- */
+const DEPOT_ADDR = '599 avenue de Norvège, Québec';
+let DEPOT = [46.8139, -71.2080];          /* position provisoire, remplacée par l'adresse du bureau */
+let depotCircle = null, depotMarker = null, depotPromise = null;
 let map = null, layer = null, mapReady = false, geoBusy = false;
 const geoCache = (() => { try { return JSON.parse(localStorage.getItem('od_geo') || '{}'); } catch (e) { return {}; } })();
 const saveGeo = () => { try { localStorage.setItem('od_geo', JSON.stringify(geoCache)); } catch (e) {} };
@@ -1044,9 +1048,10 @@ function startMap() {
  if (!map) {
   map = L.map('map', {zoomControl:true}).setView([46.8139, -71.2080], 10);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {maxZoom:19, attribution:'Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors'}).addTo(map);
-  L.circle([46.8139, -71.2080], {radius:50000, color:'#527000', weight:2, dashArray:'6 6', fillColor:'#98e619', fillOpacity:.06, interactive:false}).addTo(map);
+  depotCircle = L.circle(DEPOT, {radius:50000, color:'#527000', weight:2, dashArray:'6 6', fillColor:'#98e619', fillOpacity:.06, interactive:false}).addTo(map);
   layer = L.layerGroup().addTo(map); mapReady = true;
  }
+ locateDepot();
  setTimeout(() => { map.invalidateSize(); renderMap(true); geocodeMissing(); }, 60);
 }
 function renderLegend(list) {
@@ -1070,12 +1075,19 @@ function renderMap(fit) {
   const c = coordOf(r);
   if (!c) { if (r.adresse || r.ville) missing++; continue; }
   const icon = L.divIcon({className:'', html:'<span class="pin' + (c.approx ? ' approx' : '') + '" style="--c:' + g.color + '"><i></i><b></b></span>', iconSize:[28,28], iconAnchor:[8,28], popupAnchor:[6,-26]});
-  L.marker([c.lat, c.lng], {icon, title:r.nom || ''}).addTo(layer).bindPopup(() => popupFor(r, g), {maxWidth:280});
+  const mk = L.marker([c.lat, c.lng], {icon, title:r.nom || '', draggable:true}).addTo(layer).bindPopup(() => popupFor(r, g), {maxWidth:280});
+  mk.on('dragend', async () => {
+   const ll = mk.getLatLng();
+   if (!confirm('Enregistrer cette nouvelle position pour ' + (r.nom || 'ce client') + ' ?')) { renderMap(); return; }
+   geoCache[r.id] = {lat:ll.lat, lng:ll.lng, approx:false, key:geoKey(r)}; saveGeo();
+   try { const u = await api('PATCH', '/rest/v1/demande?id=eq.' + encodeURIComponent(r.id), {lat:ll.lat, lng:ll.lng}, {Prefer:'return=minimal'}); if (u.ok) { r.lat = ll.lat; r.lng = ll.lng; } } catch (e) {}
+   renderMap();
+  });
   pts.push([c.lat, c.lng]);
  }
  $('mapnote').textContent = (geoBusy ? 'Localisation des adresses en cours… ' : '') +
   (missing ? missing + ' demande(s) sans position : adresse introuvable ou en attente. ' : '') +
-  'Un pin à bordure pointillée indique une position approximative (ville seulement). Cliquez sur un pin pour les détails.';
+  'Pin à bordure pointillée = position approximative (ville seulement). Un pin mal placé peut être déplacé : glissez-le, ou corrigez l’adresse dans la fiche. Cliquez sur un pin pour les détails.';
  if (fit && pts.length) map.fitBounds(pts, {padding:[40,40], maxZoom:13});
 }
 function popupFor(r, g) {
@@ -1099,6 +1111,29 @@ function popupFor(r, g) {
 }
 /* Géocodage (OpenStreetMap Nominatim) : une seule fois par adresse, résultat mémorisé */
 const sleep = ms => new Promise(res => setTimeout(res, ms));
+function locateDepot() {
+ if (depotPromise) return depotPromise;
+ depotPromise = (async () => {
+  let c = null;
+  try { c = JSON.parse(localStorage.getItem('od_depot') || 'null'); } catch (e) {}
+  if (!c || c.addr !== DEPOT_ADDR) {
+   try {
+    let p = await nominatim('599 avenue de Norvège, Québec, QC, Canada');
+    if (!p) { await sleep(1100); p = await nominatim('avenue de Norvège, Québec, QC, Canada'); }
+    if (p) { c = {addr:DEPOT_ADDR, lat:p.lat, lng:p.lng}; try { localStorage.setItem('od_depot', JSON.stringify(c)); } catch (e) {} }
+   } catch (e) { console.warn('Bureau non localisé', e); }
+  }
+  if (c) {
+   DEPOT = [c.lat, c.lng];
+   if (depotCircle) depotCircle.setLatLng(DEPOT);
+   if (map) {
+    if (depotMarker) depotMarker.remove();
+    depotMarker = L.marker(DEPOT, {icon:L.divIcon({className:'', html:'<span class="pin depot" style="--c:#141614"><i></i><b></b></span>', iconSize:[28,28], iconAnchor:[8,28], popupAnchor:[6,-26]}), title:'Bureau'}).addTo(map).bindPopup('<strong>Bureau — On Débarrasse</strong><br>' + DEPOT_ADDR.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '<br>Centre du rayon de 50 km');
+   }
+  }
+ })();
+ return depotPromise;
+}
 async function nominatim(q) {
  const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ca&accept-language=fr&q=' + encodeURIComponent(q));
  if (!r.ok) throw new Error('geo');
@@ -1116,6 +1151,7 @@ async function geocodeRun() {
   try {
    const full = [r.adresse, r.ville, 'Québec, Canada'].filter(Boolean).join(', ');
    let p = r.adresse ? await nominatim(full) : null, approx = false;
+   if (!p && r.adresse) { await sleep(1100); p = await nominatim([r.adresse, r.ville].filter(Boolean).join(', ')); }
    if (!p && r.ville) { await sleep(1100); p = await nominatim(r.ville + ', Québec, Canada'); approx = true; }
    if (p) {
     geoCache[r.id] = {lat:p.lat, lng:p.lng, approx, key:geoKey(r)}; saveGeo();
@@ -1131,7 +1167,6 @@ async function geocodeRun() {
 }
 
 /* ---------- Optimiser ma journée ---------- */
-const DEPOT = [46.8139, -71.2080];
 let routeLayer = null;
 const hav = (a, b) => { const R = 6371, t = x => x * Math.PI / 180, dl = t(b[0] - a[0]), dn = t(b[1] - a[1]);
  const h = Math.sin(dl / 2) ** 2 + Math.cos(t(a[0])) * Math.cos(t(b[0])) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
@@ -1156,7 +1191,7 @@ async function optimiseDay() {
  const day = rows.filter(r => String(r.date_souhaitee || '').slice(0,10) === d && !['terminee','refusee'].includes(r.statut || 'nouvelle'));
  if (!day.length) { box.append(el('p', {class:'muted', text:'Aucune demande active pour le ' + fmtDate(d) + '.'})); return; }
  $('optbtn').disabled = true; box.append(el('p', {class:'muted', text:'Calcul de l’itinéraire…'}));
- try { await geocodeMissing(); } catch (e) {}
+ try { await locateDepot(); await geocodeMissing(); } catch (e) {}
  $('optbtn').disabled = false;
  const located = [], lost = [];
  for (const r of day) { const c = coordOf(r); c ? located.push({r, p:[c.lat, c.lng], approx:c.approx}) : lost.push(r); }
@@ -1168,7 +1203,7 @@ async function optimiseDay() {
   return el('li', {}, el('span', {class:'n', text:String(i + 1)}), el('div', {},
    el('strong', {text:s.r.nom || 'Sans nom'}),
    el('small', {text:[s.r.adresse, s.r.ville].filter(Boolean).join(', ')}),
-   el('small', {text:[s.r.plage_horaire, s.r.volume].filter(Boolean).join(' · ') + ' — ' + (i ? 'trajet depuis l’arrêt précédent' : 'trajet depuis le centre de Québec') + ' : ' + km.toFixed(1) + ' km · ' + mins(km) + ' min'}))); });
+   el('small', {text:[s.r.plage_horaire, s.r.volume].filter(Boolean).join(' · ') + ' — ' + (i ? 'trajet depuis l’arrêt précédent' : 'trajet depuis le bureau') + ' : ' + km.toFixed(1) + ' km · ' + mins(km) + ' min'}))); });
  const back = road(prev, DEPOT); total += back;
  const wp = plan.slice(0, 9).map(s => s.p.join(',')).join('|'), home = DEPOT.join(',');
  const gm = 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + home + '&destination=' + home + '&waypoints=' + encodeURIComponent(wp);
@@ -1176,7 +1211,7 @@ async function optimiseDay() {
   el('p', {class:'sum', text:'Trajets : environ ' + total.toFixed(0) + ' km · ' + mins(total) + ' min de route (retour inclus)'}),
   el('ol', {}, ...items),
   el('a', {class:'btn primary', href:gm, target:'_blank', rel:'noopener noreferrer', text:'Ouvrir l’itinéraire dans Google Maps'}),
-  el('p', {class:'warn', text:'Ordre proposé : matins d’abord, puis après-midis, en visitant le plus proche à chaque fois. Départ et retour au centre de Québec. Distances et durées estimées, sans le temps sur place.'
+  el('p', {class:'warn', text:'Ordre proposé : matins d’abord, puis après-midis, en visitant le plus proche à chaque fois. Départ et retour au bureau (599 avenue de Norvège). Distances et durées estimées, sans le temps sur place.'
    + (plan.some(s => s.approx) ? ' Certaines positions sont approximatives.' : '')
    + (lost.length ? ' Non localisé : ' + lost.map(r => r.nom || 'Sans nom').join(', ') + '.' : '')}));
  if (map) {
@@ -1209,6 +1244,7 @@ async function openSheet(r) {
  sel.value = st;
  const prix = el('input', {id:'f-prix', type:'number', min:'0', step:'5', inputmode:'decimal'}); prix.value = r.prix ?? '';
  const notes = el('textarea', {id:'f-notes', maxlength:'2000'}); notes.value = r.notes || '';
+ const addr = el('input', {id:'f-adresse', type:'text', maxlength:'200', autocomplete:'off'}); addr.value = r.adresse || '';
  const msg = el('p', {class:'msg', role:'alert'});
  const save = el('button', {class:'primary', type:'button', text:'Enregistrer'});
  const del = el('button', {class:'danger', type:'button', text:'Supprimer'});
@@ -1217,9 +1253,12 @@ async function openSheet(r) {
   try {
    const p = prix.value === '' ? null : Number(prix.value);
    if (p !== null && !(p >= 0)) throw new Error('Prix invalide.');
-   const r2 = await api('PATCH', '/rest/v1/demande?id=eq.' + encodeURIComponent(r.id), {statut:sel.value, prix:p, notes:notes.value.trim() || null}, {Prefer:'return=minimal'});
+   const na = addr.value.trim(), moved = na !== (r.adresse || '');
+   const patch = {statut:sel.value, prix:p, notes:notes.value.trim() || null};
+   if (moved) Object.assign(patch, {adresse:na, lat:null, lng:null});
+   const r2 = await api('PATCH', '/rest/v1/demande?id=eq.' + encodeURIComponent(r.id), patch, {Prefer:'return=minimal'});
    if (!r2.ok) { console.error(await r2.text()); throw new Error('Enregistrement impossible.'); }
-   Object.assign(r, {statut:sel.value, prix:p, notes:notes.value.trim() || null});
+   Object.assign(r, patch); if (moved) { delete geoCache[r.id]; saveGeo(); if (map) geocodeMissing(); }
    render(); msg.className = 'msg ok'; msg.textContent = 'Enregistré.';
   } catch (e) { if (e.message !== '401') msg.textContent = e.message; }
   finally { save.disabled = false; }
@@ -1241,6 +1280,7 @@ async function openSheet(r) {
   el('div', {class:'edit'},
    el('div', {}, el('label', {for:'f-statut', text:'Statut'}), sel),
    el('div', {}, el('label', {for:'f-prix', text:'Prix soumis ($)'}), prix),
+   el('div', {class:'full'}, el('label', {for:'f-adresse', text:'Adresse (modifiez-la pour corriger la position sur la carte)'}), addr),
    el('div', {class:'full'}, el('label', {for:'f-notes', text:'Notes privées'}), notes)),
   msg, el('div', {class:'sheet-actions'}, del, save));
  if (!$('sheet').open) $('sheet').showModal();
