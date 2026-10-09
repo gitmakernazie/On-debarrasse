@@ -270,7 +270,7 @@ async function uploadPhoto(id, index, file) {
  const response = await fetch(SUPABASE_URL + '/storage/v1/object/soumissions-photos/' + path, {
   method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': type }, body: blob
  });
- if (!response.ok) throw new Error('photo');
+ if (!response.ok) { console.error('Photo non envoyée', response.status, await response.text()); throw new Error('photo'); }
  return path;
 }
 sendButton.addEventListener('click', async () => {
@@ -294,14 +294,15 @@ sendButton.addEventListener('click', async () => {
   const response = await fetch(SUPABASE_URL + '/rest/v1/demande', {
    method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(row)
   });
-  if (!response.ok) throw new Error('envoi');
+  if (!response.ok) { console.error('Demande non envoyée', response.status, await response.text()); throw new Error('envoi'); }
   status.textContent = done;
   form.reset();
   for (const item of selected.values()) URL.revokeObjectURL(item.url);
   selected.clear(); previews.replaceChildren(); updatePhotoMessage();
   if (window.OnDebarrasseMeasurement) window.OnDebarrasseMeasurement.formSuccess({ success: true, demo: false, event_id: id });
-  status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  window.location.href = 'confirmation.html';
  } catch (error) {
+  console.error('Envoi échoué', error);
   status.textContent = 'Votre demande n’a pas pu être envoyée. Vérifiez votre connexion et réessayez, ou appelez-nous au 438 521-2310.';
  } finally {
   sending = false; sendButton.disabled = false;
