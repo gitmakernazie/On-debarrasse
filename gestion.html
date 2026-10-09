@@ -1,73 +1,295 @@
 <!doctype html>
-<html lang="fr-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'"><title>On Débarrasse — Gestion des journées</title><style>
-:root{--ink:#141614;--green:#98e619;--bg:#f3f4f2;--line:#d9ded6;--muted:#555c53}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}header{background:#000;color:white;border-bottom:3px solid var(--green);padding:22px 28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}header strong{font-size:21px}header span{font-size:14px;color:#c6cebe}main{max-width:1450px;margin:auto;padding:30px 24px 50px}h1{font-size:32px;letter-spacing:-1px;margin:0 0 12px}h2{font-size:22px;margin:0 0 16px}p{margin:0 0 16px}.muted{color:var(--muted);font-size:14px}.notice{padding:16px;background:#eef8df;border-left:4px solid var(--green);border-radius:8px;font-size:14px}.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(340px,1fr);gap:24px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:24px;min-width:0}.filters,.settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}input,select,button{font:inherit}input,select{width:100%;min-height:50px;padding:12px;border:1px solid #aeb6a6;border-radius:8px;font-size:16px;background:white;min-width:0}button{min-height:48px;padding:12px 16px;border:1px solid var(--line);border-radius:8px;background:white;font-weight:700;cursor:pointer;touch-action:manipulation}button.primary{background:var(--green);border-color:var(--green)}button:disabled{opacity:.55;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #527000;outline-offset:3px}.request{border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}.request-top{display:flex;justify-content:space-between;gap:12px;align-items:start}.request h3{font-size:18px;margin:0 0 6px}.badge{display:inline-block;font-size:12px;font-weight:700;padding:6px 9px;border-radius:6px;background:#eef3e8;white-space:nowrap}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0;font-size:14px}.facts dt{color:var(--muted);font-size:13px}.facts dd{margin:2px 0 0;font-weight:700}.address{font-size:14px;color:var(--muted);overflow-wrap:anywhere}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.stat{padding:14px 10px;background:var(--bg);border-radius:8px}.stat strong{display:block;font-size:23px}.stat span{font-size:12px;color:var(--muted)}.bar{height:9px;background:#e5e9e0;border-radius:20px;overflow:hidden;margin:8px 0}.bar span{display:block;height:100%;background:var(--green);width:0}.alerts{font-size:14px}.alerts p{padding:12px;border-radius:8px;background:#fff3df;margin-bottom:10px}.planned{padding:16px 0;border-top:1px solid var(--line)}.planned h3{margin:0 0 6px;font-size:17px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.status{padding:12px;background:#eef8df;border-radius:8px;font-size:14px;margin:14px 0}.status:empty{display:none}.full{grid-column:1/-1}.edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.edit summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:14px;font-weight:700}.edit .settings{margin:14px 0 0}.small{font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.footnote{margin-top:20px;border-top:1px solid var(--line);padding-top:16px;font-size:14px;color:var(--muted)}[hidden]{display:none!important}
-@media(max-width:1000px){.layout{grid-template-columns:1fr}.panel{padding:22px}}
-@media(max-width:540px){main{padding:24px 16px}header{padding:18px 16px}h1{font-size:28px}.filters,.settings{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.stat{display:flex;justify-content:space-between;align-items:center}.facts{gap:12px}.request-top{flex-direction:column}.actions button{flex:1;min-height:52px}.request>button{width:100%}.panel{padding:20px 16px}.badge,.small,.stat span,.facts dt{font-size:14px}.primary{min-height:56px}.request{padding:16px}}
-
-/* Gestion : lisibilité, états actifs, boutons tactiles. */
-:root{--od-ease:cubic-bezier(.2,.8,.2,1)}
-h1{text-wrap:balance;line-height:1.12}
-.panel{box-shadow:0 14px 28px -16px #14161426,0 2px 6px #14161408}
-.request{transition:transform .25s var(--od-ease),box-shadow .25s ease,border-color .2s ease}
-@media(hover:hover) and (pointer:fine){.request:hover{transform:translateY(-3px);box-shadow:0 12px 24px -10px #14161426;border-color:#b5d98a}}
-button{transition:transform .15s var(--od-ease),background-color .2s ease,border-color .2s ease,box-shadow .2s ease}
-@media(hover:hover){button:hover:not(:disabled){background:#f3f4f2;border-color:#aeb6a6}button.primary:hover:not(:disabled){background:#a9ef39;border-color:#a9ef39}}
+<html lang="fr-CA"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob: https://lizpwezdfiwgpkdqpfsp.supabase.co; connect-src https://lizpwezdfiwgpkdqpfsp.supabase.co; form-action 'none'; base-uri 'none'">
+<title>On Débarrasse — Gestion des demandes</title>
+<style>
+:root{--ink:#141614;--green:#98e619;--green-d:#527000;--bg:#f3f4f2;--line:#d9ded6;--muted:#555c53;--white:#fff;--red:#b3261e;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+header.top{background:var(--ink);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:3px solid var(--green)}
+header.top strong{font-size:18px;letter-spacing:.2px}
+header.top span{color:#c9d0c3;font-size:13px}
+button{min-height:46px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;transition:transform .15s var(--ease),background-color .2s,border-color .2s}
 button:active:not(:disabled){transform:scale(.97)}
-button.primary{box-shadow:0 3px 0 #5b8d08;font-weight:800}
+button:disabled{opacity:.55;cursor:default}
+button.primary{background:var(--green);border-color:var(--green);color:var(--ink);box-shadow:0 3px 0 #5b8d08}
 button.primary:active:not(:disabled){box-shadow:0 1px 0 #5b8d08}
-button.primary:disabled{box-shadow:none}
-input,select{border-radius:10px;transition:border-color .2s ease,box-shadow .2s ease}
-input:focus,select:focus{border-color:#527000;box-shadow:0 0 0 4px #98e61940}
-::placeholder{color:#686d61;opacity:1}
-.stat{transition:transform .2s var(--od-ease)}
-.stat strong{letter-spacing:-.5px}
-.edit summary{border-radius:8px;transition:background-color .2s ease}
-@media(hover:hover){.edit summary:hover{background:#f3f4f2}}
-.badge{border:1px solid #d9e6c6}
-.planned{transition:background-color .2s ease}
-.status:not(:empty){animation:od-fade .3s ease}
-@keyframes od-fade{from{opacity:0}to{opacity:1}}
-@media(max-width:540px){input,select{min-height:56px}.request-top .badge{align-self:flex-start}.actions button{min-height:52px}}
+button.danger{color:var(--red);border-color:#e6c1be}
+button.ghost{background:transparent;border-color:#4a5148;color:#fff;min-height:38px;padding:0 14px;font-size:14px}
+@media(hover:hover){button:hover:not(:disabled){border-color:#aeb6a6;background:#f7f8f6}button.primary:hover:not(:disabled){background:#a9ef39}}
+a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;color:var(--ink);text-decoration:none}
+input,select,textarea{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:none;border-color:var(--green-d);box-shadow:0 0 0 4px #98e61940}
+label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:0 0 6px}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:30px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
+.muted{color:var(--muted);margin:0}
+/* Connexion */
+.login{max-width:420px;margin:48px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 14px 28px -16px #14161426}
+.login h1{font-size:26px}
+.login .field{margin-top:16px}
+.login button{width:100%;margin-top:22px}
+.msg{min-height:22px;margin:12px 0 0;font-size:14px;color:var(--red)}
+.msg.ok{color:var(--green-d)}
+/* Statistiques */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;border-left:5px solid var(--green)}
+.stat strong{display:block;font-size:30px;line-height:1.1}
+.stat span{font-size:13px;color:var(--muted)}
+/* Filtres */
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:18px}
+/* Liste */
+.list{display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;display:grid;gap:6px;text-align:left;width:100%;min-height:0;font-weight:400;transition:transform .25s var(--ease),box-shadow .25s,border-color .2s}
+@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px #14161430;border-color:#b5d98a}}
+.card .row1{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card .name{font-weight:800;font-size:17px}
+.card .meta{font-size:14px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;background:#eef1ea;border:1px solid #d9e6c6}
+.s-nouvelle{background:var(--green);border-color:var(--green)}
+.s-contactee{background:#fff6cf;border-color:#ecd98a}
+.s-soumission_envoyee{background:#e3eefb;border-color:#b7cfee}
+.s-planifiee{background:var(--ink);color:#fff;border-color:var(--ink)}
+.s-terminee{background:#e7eae4}
+.s-refusee{background:#f8e1df;border-color:#e6c1be}
+.empty{padding:40px 16px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px}
+/* Fiche */
+dialog{border:none;border-radius:18px;padding:0;width:min(720px,calc(100vw - 20px));max-height:calc(100vh - 20px);box-shadow:0 30px 70px -20px #000a}
+dialog::backdrop{background:#141614b3}
+.sheet{padding:22px;display:grid;gap:16px}
+.sheet-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sheet h2{margin:0;font-size:22px}
+.close{min-height:40px;padding:0 14px}
+dl{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;margin:0}
+dt{color:var(--muted);font-size:13px;font-weight:700}
+dd{margin:0;overflow-wrap:anywhere}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.photos a{display:block;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg)}
+.photos img{width:100%;height:100%;object-fit:cover;display:block}
+.edit{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:16px}
+.edit .full{grid-column:1/-1}
+.sheet-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
+@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}.filters .search{grid-column:1/-1}h1{font-size:26px}}
+@media(max-width:540px){header.top span{display:none}dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:8px}.edit{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.quick{grid-template-columns:1fr}dialog{width:100vw;max-height:100vh;border-radius:0;height:100vh}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-</style></head><body><header><strong>On Débarrasse.</strong><span>Gestion des journées · Interface de démonstration</span></header><main><h1>Organisez votre journée de camion.</h1><p class="muted">Examinez les demandes, regroupez les clients par secteur et estimez la charge de votre journée.</p><p class="notice">Données fictives uniquement. Les modifications restent en mémoire dans cette page et disparaissent au rechargement. Aucun client n’est contacté, aucune réservation n’est créée et aucun calendrier n’est connecté. Cet écran n’est pas un espace administrateur sécurisé.</p><div class="layout"><section class="panel" aria-labelledby="requests-title"><h2 id="requests-title">Demandes à examiner</h2><div class="filters"><div><label for="search">Rechercher un client ou une adresse</label><input id="search" type="search" placeholder="Nom ou adresse"></div><div><label for="sector-filter">Secteur</label><select id="sector-filter"><option value="">Tous les secteurs</option><option>Québec</option><option>Lévis</option><option>Saint-Augustin</option><option>Sainte-Anne-de-Beaupré</option><option>Stoneham</option></select></div><div><label for="status-filter">Statut</label><select id="status-filter"><option value="">Tous les statuts</option><option>À examiner</option><option>Estimation prête</option><option>Planifié — brouillon</option><option>Confirmé — démo</option></select></div></div><p class="muted" id="count" role="status"></p><div id="requests"></div></section><section class="panel" aria-labelledby="day-title"><h2 id="day-title">Composer une journée</h2><div class="settings"><div><label for="day">Date de la journée</label><input id="day" type="date" value="2026-10-12"></div><div><label for="focus-sector">Secteur prioritaire</label><select id="focus-sector"><option>Québec</option><option>Lévis</option><option>Saint-Augustin</option><option>Sainte-Anne-de-Beaupré</option><option>Stoneham</option></select></div><div><label for="hours">Temps disponible (heures)</label><input id="hours" type="number" min="1" max="24" step="0.5" value="8"></div><div><label for="capacity">Capacité prévue (camions)</label><input id="capacity" type="number" min="0.25" max="10" step="0.25" value="1"></div><div class="full"><label for="travel">Marge totale : trajets, pauses et déchargement (minutes)</label><input id="travel" type="number" min="0" max="1440" step="15" value="90"></div></div><p class="muted">Paramètres indicatifs à ajuster. Une capacité de 1 correspond à un chargement ; un déchargement ou un second trajet doit être prévu séparément.</p><button class="primary" id="group">Ajouter les demandes du même secteur</button><div class="stats"><div class="stat"><strong id="clients">0</strong><span>Clients regroupés</span></div><div class="stat"><strong id="duration">0 h</strong><span>Interventions + marge</span></div><div class="stat"><strong id="volume">0 %</strong><span>Volume / capacité</span></div></div><div class="bar" aria-hidden="true"><span id="fill"></span></div><div class="alerts" id="alerts"></div><p class="status" id="message" role="status" aria-live="polite"></p><div id="planned"></div><button class="primary" id="confirm" disabled>Confirmer la journée — démo</button><p class="footnote">Vous gardez la décision finale. Le regroupement ne calcule pas un itinéraire optimal, les temps de route réels ni la faisabilité physique du chargement. Vérifiez les accès, les volumes, les disponibilités et la location avant toute confirmation réelle.</p></section></div></main><script>
-const data=[
-{id:1,name:'Client démo A',address:'Adresse fictive A — Québec',sector:'Québec',volume:.25,duration:60,wish:'2026-10-12',status:'À examiner'},
-{id:2,name:'Client démo B',address:'Adresse fictive B — Québec',sector:'Québec',volume:.25,duration:75,wish:'2026-10-12',status:'Estimation prête'},
-{id:3,name:'Client démo C',address:'Adresse fictive C — Lévis',sector:'Lévis',volume:.5,duration:120,wish:'2026-10-13',status:'À examiner'},
-{id:4,name:'Client démo D',address:'Adresse fictive D — Stoneham',sector:'Stoneham',volume:.25,duration:60,wish:'2026-10-12',status:'À examiner'},
-{id:5,name:'Client démo E',address:'Adresse fictive E — Québec',sector:'Québec',volume:.5,duration:120,wish:'2026-10-14',status:'À examiner'},
-{id:6,name:'Client démo F',address:'Adresse fictive F — Sainte-Anne-de-Beaupré',sector:'Sainte-Anne-de-Beaupré',volume:.25,duration:90,wish:'2026-10-13',status:'Estimation prête'}];
-let plan=[];const $=id=>document.getElementById(id);const formatDate=s=>s?new Date(s+'T12:00:00').toLocaleDateString('fr-CA'):'À préciser';const time=m=>Math.floor(m/60)+' h '+(m%60?String(m%60).padStart(2,'0'):'');
-function el(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n}function button(text,fn){const b=el('button',text);b.type='button';b.onclick=fn;return b}function announce(t){$('message').textContent=t}function invalidate(){for(const d of data)if(d.status==='Confirmé — démo')d.status='Planifié — brouillon'}
-function facts(d){const dl=el('dl',undefined,'facts');for(const [k,v] of [['Secteur',d.sector],['Volume estimé',(d.volume*100)+' % de camion'],['Durée estimée',time(d.duration)],['Date souhaitée',formatDate(d.wish)]]){const div=el('div');div.append(el('dt',k),el('dd',v));dl.append(div)}return dl}
-function add(id){if(!plan.includes(id)){invalidate();plan.push(id);data.find(d=>d.id===id).status='Planifié — brouillon';announce('Demande ajoutée au brouillon. La date souhaitée reste à vérifier.')}render()}
-function render(){const query=$('search').value.toLowerCase();const sector=$('sector-filter').value;const status=$('status-filter').value;const filtered=data.filter(d=>(!query||(d.name+' '+d.address).toLowerCase().includes(query))&&(!sector||d.sector===sector)&&(!status||d.status===status));$('count').textContent=filtered.length+' demande(s) affichée(s)';$('requests').replaceChildren();for(const d of filtered){const card=el('article',undefined,'request');const top=el('div',undefined,'request-top');top.append(el('h3',d.name),el('span',d.status,'badge'));card.append(top,el('div',d.address,'address'),facts(d));const b=button(plan.includes(d.id)?'Déjà dans la journée':'Ajouter à la journée',()=>add(d.id));b.disabled=plan.includes(d.id);card.append(b);const details=el('details',undefined,'edit');details.append(el('summary','Ajuster les estimations'));const fields=el('div',undefined,'settings');for(const [key,label,step] of [['volume','Volume estimé (fraction de camion)',.25],['duration','Durée estimée (minutes)',15]]){const wrap=el('div');const lab=el('label',label);const input=el('input');input.id=key+'-'+d.id;lab.htmlFor=input.id;input.type='number';input.min=key==='volume'?'.25':'15';input.max=key==='volume'?'10':'1440';input.step=step;input.value=d[key];input.onchange=()=>{if(!input.checkValidity()){input.reportValidity();input.value=d[key];return}d[key]=Number(input.value);invalidate();render();announce('Estimation ajustée dans cette démonstration.')};wrap.append(lab,input);fields.append(wrap)}details.append(fields);card.append(details);$('requests').append(card)}renderPlan()}
-function renderPlan(){const items=plan.map(id=>data.find(d=>d.id===id));const minutes=items.reduce((s,d)=>s+d.duration,0)+(items.length?Number($('travel').value)||0:0);const volume=items.reduce((s,d)=>s+d.volume,0);const capacity=Number($('capacity').value)||1;const available=(Number($('hours').value)||8)*60;const conflicts=items.filter(d=>d.wish!==$('day').value);const sectors=new Set(items.map(d=>d.sector));$('clients').textContent=items.length;$('duration').textContent=time(minutes);$('volume').textContent=Math.round(volume/capacity*100)+' %';$('fill').style.width=Math.min(100,volume/capacity*100)+'%';$('alerts').replaceChildren();for(const text of [minutes>available?'Durée prévue supérieure au temps disponible.':null,volume>capacity?'Volume supérieur à la capacité prévue : ajustez le plan ou prévoyez un déchargement.':null,conflicts.length?conflicts.length+' client(s) ont demandé une autre date : leur accord sera nécessaire.':null,sectors.size>1?'Plusieurs secteurs regroupés : réévaluez la marge de déplacement.':null].filter(Boolean))$('alerts').append(el('p',text));$('planned').replaceChildren();if(!items.length)$('planned').append(el('p','Ajoutez une demande pour composer votre journée.','muted'));items.forEach((d,i)=>{const card=el('article',undefined,'planned');card.append(el('h3',(i+1)+'. '+d.name),el('p',d.sector+' · '+time(d.duration)+' · '+(d.volume*100)+' % de camion','muted'));const actions=el('div',undefined,'actions');const up=button('Monter',()=>{[plan[i-1],plan[i]]=[plan[i],plan[i-1]];invalidate();render()});up.disabled=i===0;const down=button('Descendre',()=>{[plan[i+1],plan[i]]=[plan[i],plan[i+1]];invalidate();render()});down.disabled=i===items.length-1;actions.append(up,down,button('Retirer',()=>{invalidate();plan=plan.filter(id=>id!==d.id);d.status='À examiner';render();announce('Demande retirée du brouillon.')}));card.append(actions);appendDeposit(card,d);$('planned').append(card)});$('confirm').disabled=!items.length||!$('day').value||minutes>available||volume>capacity}
-$('group').onclick=()=>{if(!$('day').value){$('day').reportValidity();return}invalidate();const sector=$('focus-sector').value;let count=0;for(const d of data)if(d.sector===sector&&d.wish===$('day').value&&!plan.includes(d.id)){plan.push(d.id);d.status='Planifié — brouillon';count++}render();announce(count+' demande(s) du secteur '+sector+' ayant demandé cette date ajoutée(s). Vérifiez le volume et la durée avant confirmation.')};
-$('confirm').onclick=()=>{for(const d of data)if(plan.includes(d.id))d.status='Confirmé — démo';render();announce('Journée confirmée dans la démonstration uniquement. Aucun client averti, aucune réservation réelle et aucune synchronisation calendrier.')};
-for(const id of ['search','sector-filter','status-filter'])$(id).addEventListener('input',render);for(const id of ['day','focus-sector','hours','capacity','travel'])$(id).addEventListener('change',()=>{if(!$(id).checkValidity()){$(id).reportValidity();return}invalidate();render()});
+</style></head>
+<body>
+<header class="top"><strong>On Débarrasse.</strong><span>Gestion des demandes · accès privé</span><button class="ghost" id="logout" hidden>Se déconnecter</button></header>
 
-// Préparation Stripe uniquement : aucune clé, session, requête ou collecte de carte.
-const deposits = new Map();
-function appendDeposit(card,d){
- const section=el('section',undefined,'edit');
- section.append(el('h3','Dépôt client'));
- const isConfirmed=d.status==='Confirmé — démo';
- section.append(el('p',isConfirmed?'Rendez-vous confirmé dans la démonstration. Vous pouvez préparer une demande de dépôt.':'Confirmez le rendez-vous avant de préparer un dépôt.','muted'));
- const label=el('label','Montant du dépôt (CAD)');
- const input=el('input'); input.type='number';input.min='0.50';input.step='0.01';input.id='deposit-'+d.id;label.htmlFor=input.id;input.placeholder='Montant à définir';input.disabled=!isConfirmed;
- const draft=deposits.get(d.id);if(draft)input.value=draft.amount;
- section.append(label,input);
- const message=el('p',draft?'Demande de dépôt préparée — démo. Non envoyée et non payée.':'','muted');message.setAttribute('role','status');
- const prepare=button('Préparer la demande de dépôt — démo',()=>{
-  if(d.status!=='Confirmé — démo')return;
-  if(!input.value||!input.checkValidity()){input.reportValidity();return;}
-  const amount=Number(input.value);if(!Number.isFinite(amount)||amount<.5)return;
-  deposits.set(d.id,{amount,currency:'CAD',status:'draft'});
-  message.textContent='Demande de dépôt de '+amount.toLocaleString('fr-CA',{style:'currency',currency:'CAD'})+' préparée — démo. Aucun lien Stripe créé, aucun client contacté et aucun paiement effectué.';
- });prepare.disabled=!isConfirmed;prepare.className='primary';prepare.style.marginTop='12px';
- section.append(prepare,message);card.append(section);
+<main>
+ <section class="login" id="login">
+  <h1>Connexion</h1>
+  <p class="muted">Accès réservé au propriétaire.</p>
+  <div class="field"><label for="email">Courriel</label><input id="email" type="email" autocomplete="username" inputmode="email"></div>
+  <div class="field"><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password"></div>
+  <button class="primary" id="signin">Se connecter</button>
+  <p class="msg" id="login-msg" role="alert"></p>
+ </section>
+
+ <section id="app" hidden>
+  <h1>Vos demandes de soumission</h1>
+  <p class="muted">Touchez une demande pour voir les détails, les photos et mettre à jour son suivi.</p>
+  <div class="stats" id="stats"></div>
+  <div class="filters">
+   <div class="search"><label for="q">Recherche</label><input id="q" type="search" placeholder="Nom, téléphone, adresse…"></div>
+   <div><label for="fstatut">Statut</label><select id="fstatut"></select></div>
+   <div><label for="fville">Ville</label><select id="fville"></select></div>
+   <button id="refresh">Actualiser</button>
+  </div>
+  <p class="msg" id="app-msg" role="alert"></p>
+  <div class="list" id="list"></div>
+ </section>
+</main>
+
+<dialog id="sheet"><div class="sheet" id="sheet-body"></div></dialog>
+
+<script>
+'use strict';
+const URL_BASE = 'https://lizpwezdfiwgpkdqpfsp.supabase.co';
+const KEY = 'sb_publishable_rMsK8JKSPK8pOzqdO5AUhw_QCbIA-Nr';
+const BUCKET = 'soumissions-photos';
+const STATUTS = [
+ ['nouvelle','Nouvelle'],['contactee','Contactée'],['soumission_envoyee','Soumission envoyée'],
+ ['planifiee','Planifiée'],['terminee','Terminée'],['refusee','Refusée']
+];
+const LABEL = Object.fromEntries(STATUTS);
+const $ = id => document.getElementById(id);
+let session = null, rows = [];
+
+/* ---------- utilitaires sûrs (aucun innerHTML avec données) ---------- */
+function el(tag, attrs, ...kids) {
+ const n = document.createElement(tag);
+ for (const [k, v] of Object.entries(attrs || {})) {
+  if (k === 'class') n.className = v; else if (k === 'text') n.textContent = v; else if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v);
+ }
+ for (const kid of kids) if (kid != null) n.append(kid);
+ return n;
 }
-// Nouveau rendu une fois le module de dépôt initialisé.
-render();
-</script></body></html>
+const fmtDate = s => s ? new Date(String(s).slice(0,10) + 'T12:00:00').toLocaleDateString('fr-CA', {day:'numeric', month:'long', year:'numeric'}) : '—';
+const fmtDateTime = s => s ? new Date(s).toLocaleString('fr-CA', {dateStyle:'medium', timeStyle:'short'}) : '—';
+const digits = s => String(s || '').replace(/[^\d+]/g, '');
+
+/* ---------- session ---------- */
+function saveSession(s) {
+ session = s;
+ try { if (s) localStorage.setItem('od_gestion', JSON.stringify({refresh_token: s.refresh_token})); else localStorage.removeItem('od_gestion'); } catch (e) {}
+}
+async function authCall(path, body) {
+ const r = await fetch(URL_BASE + '/auth/v1/' + path, {method:'POST', headers:{apikey:KEY, 'Content-Type':'application/json'}, body:JSON.stringify(body)});
+ const j = await r.json().catch(() => ({}));
+ if (!r.ok) throw new Error(j.error_description || j.msg || 'Erreur de connexion');
+ return j;
+}
+async function refreshSession() {
+ let rt = null;
+ try { rt = JSON.parse(localStorage.getItem('od_gestion') || 'null')?.refresh_token; } catch (e) {}
+ if (!rt) return false;
+ try { saveSession(await authCall('token?grant_type=refresh_token', {refresh_token: rt})); return true; }
+ catch (e) { saveSession(null); return false; }
+}
+async function api(method, path, body, extra) {
+ const go = () => fetch(URL_BASE + path, {method, headers:Object.assign({apikey:KEY, Authorization:'Bearer ' + (session && session.access_token), 'Content-Type':'application/json'}, extra || {}), body: body ? JSON.stringify(body) : undefined});
+ let r = await go();
+ if (r.status === 401 && await refreshSession()) r = await go();
+ if (r.status === 401) { showLogin('Session expirée. Reconnectez-vous.'); throw new Error('401'); }
+ return r;
+}
+
+/* ---------- affichage connexion / app ---------- */
+function showLogin(message) {
+ $('app').hidden = true; $('login').hidden = false; $('logout').hidden = true;
+ $('login-msg').textContent = message || ''; $('password').value = '';
+}
+function showApp() { $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false; load(); }
+
+$('signin').addEventListener('click', async () => {
+ const b = $('signin'); $('login-msg').textContent = '';
+ if (!$('email').value || !$('password').value) { $('login-msg').textContent = 'Entrez votre courriel et votre mot de passe.'; return; }
+ b.disabled = true;
+ try { saveSession(await authCall('token?grant_type=password', {email:$('email').value.trim(), password:$('password').value})); showApp(); }
+ catch (e) { $('login-msg').textContent = 'Courriel ou mot de passe incorrect.'; }
+ finally { b.disabled = false; $('password').value = ''; }
+});
+$('password').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
+$('logout').addEventListener('click', async () => {
+ try { if (session) await fetch(URL_BASE + '/auth/v1/logout', {method:'POST', headers:{apikey:KEY, Authorization:'Bearer ' + session.access_token}}); } catch (e) {}
+ saveSession(null); rows = []; showLogin('Vous êtes déconnecté.');
+});
+
+/* ---------- données ---------- */
+async function load() {
+ $('app-msg').textContent = ''; $('app-msg').className = 'msg';
+ try {
+  const r = await api('GET', '/rest/v1/demande?select=*&order=created_at.desc.nullslast&limit=500');
+  if (!r.ok) { console.error(await r.text()); throw new Error(); }
+  rows = await r.json();
+  if (rows.length && rows[0].id == null) { $('app-msg').textContent = 'La table « demande » n’a pas de colonne « id » : les modifications sont impossibles.'; }
+  buildFilters(); render();
+ } catch (e) { if (e.message !== '401') $('app-msg').textContent = 'Impossible de charger les demandes. Réessayez dans un instant.'; }
+}
+function buildFilters() {
+ const s = $('fstatut'), v = $('fville'), cs = s.value, cv = v.value;
+ s.replaceChildren(el('option', {value:'', text:'Tous les statuts'}), ...STATUTS.map(([k,l]) => el('option', {value:k, text:l})));
+ const villes = [...new Set(rows.map(r => (r.ville || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b, 'fr'));
+ v.replaceChildren(el('option', {value:'', text:'Toutes les villes'}), ...villes.map(x => el('option', {value:x, text:x})));
+ s.value = cs; v.value = cv;
+}
+function render() {
+ const n = k => rows.filter(r => (r.statut || 'nouvelle') === k).length;
+ $('stats').replaceChildren(...[[n('nouvelle'),'À traiter'],[n('contactee') + n('soumission_envoyee'),'En attente de réponse'],[n('planifiee'),'Planifiées'],[rows.length,'Total des demandes']]
+  .map(([a,b]) => el('div', {class:'stat'}, el('strong', {text:String(a)}), el('span', {text:b}))));
+ const q = $('q').value.trim().toLowerCase(), fs = $('fstatut').value, fv = $('fville').value;
+ const shown = rows.filter(r => (!fs || (r.statut || 'nouvelle') === fs) && (!fv || (r.ville || '').trim() === fv) &&
+  (!q || [r.nom, r.telephone, r.email, r.adresse, r.ville].some(x => String(x || '').toLowerCase().includes(q))));
+ if (!shown.length) { $('list').replaceChildren(el('div', {class:'empty', text: rows.length ? 'Aucune demande ne correspond à ces filtres.' : 'Aucune demande pour le moment.'})); return; }
+ $('list').replaceChildren(...shown.map(r => {
+  const st = r.statut || 'nouvelle';
+  return el('button', {class:'card', type:'button', onclick:() => openSheet(r)},
+   el('div', {class:'row1'}, el('span', {class:'name', text:r.nom || 'Sans nom'}), el('span', {class:'badge s-' + st, text:LABEL[st] || st})),
+   el('span', {class:'meta', text:[r.ville, r.type_debarras, r.volume].filter(Boolean).join(' · ')}),
+   el('span', {class:'meta', text:'Date souhaitée : ' + fmtDate(r.date_souhaitee) + (r.plage_horaire ? ' · ' + r.plage_horaire : '')}),
+   el('span', {class:'meta', text:'Reçue le ' + fmtDateTime(r.created_at)}));
+ }));
+}
+['q','fstatut','fville'].forEach(i => $(i).addEventListener('input', render));
+$('refresh').addEventListener('click', load);
+
+/* ---------- fiche ---------- */
+async function openSheet(r) {
+ const body = $('sheet-body'), st = r.statut || 'nouvelle';
+ const info = [['Téléphone', r.telephone],['Courriel', r.email],['Adresse', [r.adresse, r.ville].filter(Boolean).join(', ')],['Type de débarras', r.type_debarras],['Volume', r.volume],
+  ['Escaliers', r.escaliers],['Étage', r.etage],['Date souhaitée', fmtDate(r.date_souhaitee)],['Plage horaire', r.plage_horaire],['Commentaires', r.commentaires],['Reçue le', fmtDateTime(r.created_at)]]
+  .filter(([,v]) => v != null && v !== '');
+ const dl = el('dl'); info.forEach(([k,v]) => dl.append(el('dt', {text:k}), el('dd', {text:String(v)})));
+ const phone = digits(r.telephone);
+ const quick = el('div', {class:'quick'},
+  phone ? el('a', {class:'btn primary', href:'tel:' + phone, text:'Appeler'}) : null,
+  r.email ? el('a', {class:'btn', href:'mailto:' + encodeURIComponent(r.email).replace('%40','@'), text:'Écrire un courriel'}) : null);
+ const photos = el('div', {class:'photos', 'aria-label':'Photos du client'});
+ const sel = el('select', {id:'f-statut'}, ...STATUTS.map(([k,l]) => el('option', {value:k, text:l})));
+ sel.value = st;
+ const prix = el('input', {id:'f-prix', type:'number', min:'0', step:'5', inputmode:'decimal'}); prix.value = r.prix ?? '';
+ const notes = el('textarea', {id:'f-notes', maxlength:'2000'}); notes.value = r.notes || '';
+ const msg = el('p', {class:'msg', role:'alert'});
+ const save = el('button', {class:'primary', type:'button', text:'Enregistrer'});
+ const del = el('button', {class:'danger', type:'button', text:'Supprimer'});
+ save.addEventListener('click', async () => {
+  save.disabled = true; msg.className = 'msg'; msg.textContent = '';
+  try {
+   const p = prix.value === '' ? null : Number(prix.value);
+   if (p !== null && !(p >= 0)) throw new Error('Prix invalide.');
+   const r2 = await api('PATCH', '/rest/v1/demande?id=eq.' + encodeURIComponent(r.id), {statut:sel.value, prix:p, notes:notes.value.trim() || null}, {Prefer:'return=minimal'});
+   if (!r2.ok) { console.error(await r2.text()); throw new Error('Enregistrement impossible.'); }
+   Object.assign(r, {statut:sel.value, prix:p, notes:notes.value.trim() || null});
+   render(); msg.className = 'msg ok'; msg.textContent = 'Enregistré.';
+  } catch (e) { if (e.message !== '401') msg.textContent = e.message; }
+  finally { save.disabled = false; }
+ });
+ del.addEventListener('click', async () => {
+  if (!confirm('Supprimer définitivement la demande de ' + (r.nom || 'ce client') + ' ?')) return;
+  del.disabled = true;
+  try {
+   const r2 = await api('DELETE', '/rest/v1/demande?id=eq.' + encodeURIComponent(r.id), null, {Prefer:'return=minimal'});
+   if (!r2.ok) throw new Error('Suppression impossible.');
+   rows = rows.filter(x => x !== r); buildFilters(); render(); $('sheet').close();
+  } catch (e) { if (e.message !== '401') { msg.textContent = e.message; del.disabled = false; } }
+ });
+ const close = el('button', {class:'close', type:'button', text:'Fermer', onclick:() => $('sheet').close()});
+ body.replaceChildren(
+  el('div', {class:'sheet-head'}, el('div', {}, el('h2', {text:r.nom || 'Sans nom'}), el('span', {class:'badge s-' + st, text:LABEL[st] || st})), close),
+  quick, dl,
+  Array.isArray(r.photos) && r.photos.length ? el('div', {}, el('label', {text:'Photos (' + r.photos.length + ')'}), photos) : null,
+  el('div', {class:'edit'},
+   el('div', {}, el('label', {for:'f-statut', text:'Statut'}), sel),
+   el('div', {}, el('label', {for:'f-prix', text:'Prix soumis ($)'}), prix),
+   el('div', {class:'full'}, el('label', {for:'f-notes', text:'Notes privées'}), notes)),
+  msg, el('div', {class:'sheet-actions'}, del, save));
+ $('sheet').showModal();
+ if (Array.isArray(r.photos) && r.photos.length) loadPhotos(r.photos, photos);
+}
+async function loadPhotos(paths, box) {
+ try {
+  const r = await api('POST', '/storage/v1/object/sign/' + BUCKET, {expiresIn:600, paths});
+  if (!r.ok) throw new Error();
+  const list = await r.json();
+  box.replaceChildren(...list.filter(x => x.signedURL).map(x => {
+   const u = URL_BASE + '/storage/v1' + x.signedURL;
+   return el('a', {href:u, target:'_blank', rel:'noopener noreferrer'}, el('img', {src:u, alt:'Photo du client', loading:'lazy'}));
+  }));
+ } catch (e) { box.replaceChildren(el('span', {class:'muted', text:'Photos indisponibles.'})); }
+}
+$('sheet').addEventListener('click', e => { if (e.target === $('sheet')) $('sheet').close(); });
+
+/* ---------- démarrage ---------- */
+(async () => { if (await refreshSession()) showApp(); else showLogin(); })();
+</script>
+</body></html>
