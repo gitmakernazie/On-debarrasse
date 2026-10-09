@@ -1,5 +1,5 @@
 {
-  "rewrites": [{ "source": "/gestion", "destination": "/gestion/gestion.html" }],
+  "rewrites": [{ "source": "/gestion", "destination": "/gestion.html" }],
   "headers": [
     {
       "source": "/(.*)",
