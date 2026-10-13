@@ -1,0 +1,15 @@
+ON DÉBARRASSE — site complet (nouvelle interface premium)
+
+Contenu : index.html (accueil premium), soumission.html, contact.html, confirmation.html,
+gestion.html (tableau de bord privé), vercel.json, les icônes (favicon*.png, apple-touch-icon.png)
+et les images (.webp).
+
+Mise en ligne (GitHub -> Vercel) :
+1. Dézippez ce dossier (clic droit > Extraire tout).
+2. Sur GitHub, ouvrez le dépôt On-debarrasse > Add file > Upload files.
+3. Glissez TOUS les fichiers du dossier (pas le dossier lui-même) et confirmez (Commit).
+   Les fichiers du même nom sont remplacés. Vercel publie automatiquement.
+
+Important : les photos des cartes de services (s-*.webp) sont des images temporaires
+trouvées sur le web. Remplacez-les par vos propres photos avant la mise en ligne
+(gardez les mêmes noms de fichiers).
