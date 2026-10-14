@@ -169,6 +169,10 @@ footer .footer-contact a:hover{color:#527000}
 @media(max-width:600px){footer .footer-contact{flex-direction:column;align-items:flex-start;gap:0;font-size:16px!important}footer .footer-contact a{min-height:48px}}
 
 .submit:disabled{opacity:.65;cursor:wait;transform:none}
+
+/* Calendrier : toute la case est cliquable */
+#quote-form input[type=date]{position:relative;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23181918' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:20px 20px;cursor:pointer}
+#quote-form input[type=date]::-webkit-calendar-picker-indicator{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer}
 </style>
 <meta content="noindex, follow" name="robots"/><meta content="fr_CA" property="og:locale"/><meta content="website" property="og:type"/><meta content="On Débarrasse" property="og:site_name"/><meta content="On Débarrasse | Soumission pour votre débarras à Québec" property="og:title"/><meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." property="og:description"/><meta content="summary" name="twitter:card"/><meta content="On Débarrasse | Soumission pour votre débarras à Québec" name="twitter:title"/><meta content="Préparez votre demande de soumission pour un débarras de maison, de garage ou un enlèvement de meubles avec On Débarrasse. Formulaire en démonstration." name="twitter:description"/><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"></head>
 <body>
@@ -187,8 +191,8 @@ footer .footer-contact a:hover{color:#527000}
 <div class="field full"><label for="ville">Ville *</label><input autocomplete="address-level2" id="ville" name="ville" placeholder="Votre ville" required="" type="text"/></div>
 </div></fieldset>
 <fieldset><legend><span aria-hidden="true" class="number">02</span>Votre débarras</legend><div class="grid">
-<div class="field"><label for="type">Type de débarras *</label><select id="type" name="type" required=""><option value="">Sélectionnez un service</option><option>Débarras de maison</option><option>Débarras de garage</option><option>Débarras de sous-sol</option><option>Enlèvement de meubles</option><option>Enlèvement d’électroménagers</option><option>Débarras après déménagement</option><option>Débarras général</option></select></div>
-<div class="field"><label for="volume">Volume approximatif *</label><select id="volume" name="volume" required=""><option value="">Sélectionnez un volume</option><option>Quelques objets / minimum</option><option>1/4 camion</option><option>1/2 camion</option><option>3/4 camion</option><option>Camion complet</option><option>Plus d’un camion</option><option>Je ne sais pas</option></select></div>
+<div class="field"><label for="type">Type de débarras *</label><select id="type" name="type" required=""><option value="">Sélectionnez un service</option><option>Débarras de maison</option><option>Débarras de garage</option><option>Débarras de sous-sol</option><option>Débarras après rénovation</option><option>Enlèvement d’électroménagers</option><option>Débarras après déménagement</option><option>Débarras général</option></select></div>
+<div class="field"><label for="volume">Volume approximatif *</label><select id="volume" name="volume" required=""><option value="">Sélectionnez un volume</option><option>Jusqu’à 2 m³ (minimum)</option><option>4 m³</option><option>8 m³</option><option>12 m³</option><option>15 m³ (camion complet)</option><option>Plus de 15 m³</option><option>Je ne sais pas</option></select></div>
 <div class="field"><label for="escaliers">Présence d’escaliers *</label><select id="escaliers" name="escaliers" required=""><option value="">Sélectionnez une réponse</option><option>Oui</option><option>Non</option><option>À confirmer</option></select></div>
 <div class="field"><label for="etage">Étage <span class="optional">(facultatif)</span></label><input aria-describedby="etage-help" id="etage" name="etage" placeholder="Ex. : sous-sol, rez-de-chaussée, 2e" type="text"/><p class="help" id="etage-help">Précisez plusieurs étages si nécessaire.</p></div>
 <div class="field full"><label for="date">Demander une date <span class="optional">(facultatif)</span></label><input aria-describedby="date-help" id="date" name="date" type="date"/><p class="help" id="date-help">La date et l’heure seront confirmées par On Débarrasse. Votre choix est une préférence, pas une réservation confirmée.</p></div>
@@ -367,5 +371,9 @@ window.addEventListener('pagehide', () => { for (const item of selected.values()
   }
  });
 })();
+</script><script>
+(function(){var d=document.getElementById('date');if(!d)return;
+function ouvrir(){try{if(d.showPicker)d.showPicker();}catch(e){}}
+d.addEventListener('click',ouvrir);})();
 </script></body>
 </html>
