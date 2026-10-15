@@ -20,6 +20,89 @@ h2{font-size:22px;letter-spacing:-.4px;margin:40px 0 10px;padding-top:24px;borde
 p,li{font-size:16px;color:#2c2f2a}ul{padding-left:22px}li{margin:6px 0}
 .box{background:var(--soft);border-left:4px solid var(--accent);padding:16px 20px;border-radius:0 12px 12px 0;margin:20px 0}.box p{margin:0}
 footer{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* ===== BazarVert — Premium v2 : design uniquement, aucun contenu ni fonctionnalité modifié ===== */
+:root{--bv-forest:#071a0b;--bv-deep:#0b2a12;--bv-green:#12571c;--bv-leaf:#5fae2f;--bv-leaf2:#74c03e;--bv-mint:#eef5e8;--bv-mint2:#e3efd9;--bv-line:#dce8d3;--bv-sh:0 1px 2px rgba(11,31,10,.05),0 12px 32px -14px rgba(11,42,18,.22);--bv-sh2:0 2px 4px rgba(11,31,10,.06),0 26px 48px -18px rgba(11,42,18,.38)}
+body{background:#fbfcf9!important}
+/* En-tête */
+header,.header,header.header{border-bottom:0!important;box-shadow:0 10px 30px -18px rgba(11,42,18,.45)!important;position:sticky;background:rgba(255,255,255,.96)!important;-webkit-backdrop-filter:saturate(1.3) blur(10px)!important;backdrop-filter:saturate(1.3) blur(10px)!important}
+header::after,.header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#0b2a12,#12571c 28%,#5fae2f 62%,#12571c 90%,#0b2a12)}
+header a:not(.button):not(.brand):not(.back):hover{color:#12571c!important}
+.desktop-nav>a:not(.button){position:relative}
+.desktop-nav>a:not(.button)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:#5fae2f;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.desktop-nav>a:not(.button):hover::after{transform:scaleX(1)}
+/* Boutons */
+.button.button.button,.submit.submit,.header .header-quote,header .quote-access,.od-forcta .button{background:linear-gradient(180deg,#7ccb42 0%,#5fae2f 100%)!important;color:#08200c!important;border:0!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 12px 24px -10px rgba(18,87,28,.7)!important;font-weight:800!important;letter-spacing:.2px}
+.button.button.button:hover,.submit.submit:hover{background:linear-gradient(180deg,#8bd652 0%,#69b935 100%)!important;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 18px 30px -12px rgba(18,87,28,.8)!important}
+/* Héros */
+.hero{position:relative;overflow:hidden;background:radial-gradient(900px 520px at 88% 18%,rgba(95,174,47,.30),transparent 62%),radial-gradient(700px 420px at -5% 110%,rgba(18,87,28,.55),transparent 60%),linear-gradient(135deg,#05140a 0%,#0b2a12 52%,#081a0c 100%)!important;padding-bottom:112px!important}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.3px);background-size:26px 26px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%);mask-image:linear-gradient(180deg,#000,transparent 80%);pointer-events:none}
+.hero::after{content:"";position:absolute;left:-5%;right:-5%;bottom:-1px;height:64px;background:#fbfcf9;border-radius:50% 50% 0 0/100% 100% 0 0;transform:scaleX(1.08)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{display:inline-flex!important;padding:7px 14px;border:1px solid rgba(116,192,62,.45);border-radius:999px;background:rgba(95,174,47,.12);color:#cfeab8!important}
+.hero h1 span,#hero-title span{background:linear-gradient(180deg,#9be05a,#5fae2f)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important}
+.hero .visual{border:1px solid rgba(155,224,90,.35)!important;border-radius:28px!important;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 8px rgba(95,174,47,.08)!important;background:#0b1f0a!important}
+.hero .visual-tag{background:rgba(7,26,11,.85)!important;border-color:rgba(155,224,90,.3)!important;color:#fff!important}
+.hero .lead,.hero .hero-explanation{color:#d3e4c8!important}
+.hero .hero-note{color:#9db98f!important}
+/* Bandeau */
+.strip{background:linear-gradient(90deg,#0b2a12,#12571c 50%,#0b2a12)!important;color:#fff!important;border:0!important}
+.strip *{color:#fff!important}.strip b,.strip svg{color:#9be05a!important;stroke:#9be05a!important}
+/* Sections */
+section.section{padding-top:96px!important;padding-bottom:96px!important}
+.soft,section.soft{background:linear-gradient(180deg,#f3f8ee,#eaf3e2)!important}
+.section-head .eyebrow,#services .eyebrow,.eyebrow:not(.hero .eyebrow){color:#12571c!important}
+.section-head .eyebrow::before{content:"";width:26px;height:3px;border-radius:3px;background:linear-gradient(90deg,#12571c,#5fae2f);display:inline-block}
+.section-head h2::after{content:"";display:block;width:56px;height:5px;border-radius:5px;margin-top:16px;background:linear-gradient(90deg,#12571c,#5fae2f)}
+h2{color:#0b1f0a}
+/* Cartes */
+.card,.panel,.form-card,.od-why div,.od-forcard,#fonctionnement .step,#faq .faq-item,#tarifs .price-card,#secteurs .local-panel,.confirmation-card{border:1px solid var(--bv-line)!important;box-shadow:var(--bv-sh)!important;background:#fff!important}
+@media(hover:hover) and (pointer:fine){.cards .card:hover,.od-forcard:hover,#fonctionnement .step:hover,#tarifs .price-card:hover{transform:translateY(-6px)!important;box-shadow:var(--bv-sh2)!important;border-color:#8cc66a!important}.cards .card:hover .od-cimg{transform:scale(1.05)}}
+.cards .card{overflow:hidden;position:relative}
+.cards .card .od-cimg{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.cards .card::after{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#12571c,#5fae2f);opacity:0;transition:opacity .3s}
+.cards .card:hover::after{opacity:1}
+.cards .card .label,.od-forcard span{display:inline-block;padding:6px 12px;border-radius:999px;background:#e6f1df;color:#12571c!important;font-weight:800;letter-spacing:.9px}
+.od-forcard span{border-top:0!important;margin-top:18px}
+.od-why b,.number,.check{background:linear-gradient(145deg,#7ccb42,#3f8f26)!important;color:#fff!important;box-shadow:0 8px 16px -8px rgba(18,87,28,.7)}
+.od-why b svg,.number svg{stroke:#fff!important}
+.od-foricon{background:linear-gradient(145deg,#12571c,#0b2a12)!important;box-shadow:0 12px 22px -12px rgba(11,42,18,.8)!important}
+.od-foricon svg{stroke:#9be05a!important;color:#9be05a!important}
+/* Tarifs */
+#tarifs .price-card .amount{color:#0b2a12!important}
+#tarifs .price-card.pop{background:linear-gradient(160deg,#17702a 0%,#0b2a12 100%)!important;border-color:#12571c!important;box-shadow:0 30px 56px -20px rgba(11,42,18,.75)!important;transform:translateY(-8px)}
+#tarifs .price-card.pop *{color:#fff!important}
+#tarifs .price-card.pop .amount{color:#9be05a!important}
+#tarifs .price-card.pop .ex{color:#d3e9c3!important}
+#tarifs .badge{background:linear-gradient(180deg,#7ccb42,#5fae2f)!important;color:#08200c!important;box-shadow:0 8px 16px -6px rgba(18,87,28,.6)}
+#tarifs .price-card.pop .badge,#tarifs .badge *{color:#08200c!important}
+/* Bandeaux sombres */
+.od-forcta,.contact,.aside{background:radial-gradient(520px 300px at 92% 0%,rgba(95,174,47,.30),transparent 65%),linear-gradient(135deg,#071a0b,#0d3316 70%,#12571c 140%)!important;color:#fff!important;border:1px solid rgba(155,224,90,.18)!important;box-shadow:0 30px 60px -28px rgba(7,26,11,.8)!important}
+.contact .eyebrow{color:#9be05a!important}
+.info-row,.contact-info{border-color:rgba(155,224,90,.22)!important}
+.contact .info-row a{color:#fff}
+.contact .info-row a:hover{color:#9be05a}
+/* Pied de page */
+footer,.footer{border-top:0!important;position:relative;background:#fff!important}
+footer::before,.footer::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#0b2a12,#12571c 28%,#5fae2f 62%,#12571c 90%,#0b2a12)}
+/* Formulaires */
+#quote-form input,#quote-form select,#quote-form textarea,.form-card input,.form-card select,.form-card textarea{border:1.5px solid #d3e2c8!important;border-radius:12px!important;background:#fcfefb!important;transition:border-color .2s,box-shadow .2s}
+#quote-form input:focus,#quote-form select:focus,#quote-form textarea:focus,.form-card input:focus,.form-card select:focus,.form-card textarea:focus{outline:0!important;border-color:#5fae2f!important;box-shadow:0 0 0 4px rgba(95,174,47,.22)!important}
+#quote-form .upload{background:linear-gradient(160deg,#f4faee,#e8f3de)!important;border:2px dashed #5fae2f!important;border-radius:18px!important}
+#quote-form .upload-symbol{background:linear-gradient(145deg,#7ccb42,#3f8f26)!important;color:#fff!important}
+#quote-form input[type=file]::file-selector-button{background:linear-gradient(145deg,#12571c,#0b2a12);color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;margin-right:12px}
+#quote-form input[type=checkbox]{accent-color:#12571c}
+.form-card h2::after,.panel h2::after{display:none}
+@media(max-width:700px){section.section{padding-top:60px!important;padding-bottom:60px!important}.hero{padding-bottom:84px!important}.hero::after{height:40px}#tarifs .price-card.pop{transform:none}}
+@media(prefers-reduced-motion:reduce){.cards .card:hover .od-cimg{transform:none}}
+#fonctionnement .step .icon,.cards .card .icon{background:#e6f1df!important}
+#fonctionnement .step .icon svg{stroke:#12571c!important}
+.od-engagements li,.od-mission,.edit-note{background:#eef5e8!important;border-left-color:#5fae2f!important}
+.od-mission strong{color:#12571c}
+.aside h2,.aside h3,.aside strong,.aside li,.aside .eyebrow{color:#fff!important}
+.aside p,.aside small{color:#cfe3c3!important}
+.aside h2::after,.aside h3::after{display:none!important}
+.aside li::before,.aside svg{color:#9be05a!important}
+.od-forcta p{color:#e3f0da!important}
 </style>
 </head>
 <body>
