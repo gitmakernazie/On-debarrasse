@@ -1,4 +1,4 @@
-/* On Débarrasse — suivi des conversions Google Ads, avec consentement.
+/* BazarVert — suivi des conversions Google Ads, avec consentement.
    TANT QUE AW_ID EST VIDE : aucun suivi, aucune bannière, aucun témoin, aucune requête.
    Pour activer : remplir AW_ID (ex. 'AW-1234567890') et les étiquettes ci-dessous. */
 (function () {
@@ -44,7 +44,7 @@
   function bannière() {
     var b = document.getElementById('od-consent'); if (b) return;
     var st = document.createElement('style');
-    st.textContent = '#od-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:99999;max-width:640px;margin:auto;background:#000;color:#fff;border-radius:16px;padding:20px 22px;font:14px/1.5 Arial,Helvetica,sans-serif;box-shadow:0 12px 40px #0006}#od-consent p{margin:0 0 14px;color:#e6e8df}#od-consent a{color:#98e619;text-decoration:underline}#od-consent .r{display:flex;gap:10px;flex-wrap:wrap}#od-consent button{font:inherit;font-weight:800;min-height:46px;padding:10px 20px;border-radius:9px;border:2px solid #98e619;cursor:pointer}#od-consent .ok{background:#98e619;color:#000}#od-consent .no{background:transparent;color:#fff}';
+    st.textContent = '#od-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:99999;max-width:640px;margin:auto;background:#000;color:#fff;border-radius:16px;padding:20px 22px;font:14px/1.5 Arial,Helvetica,sans-serif;box-shadow:0 12px 40px #0006}#od-consent p{margin:0 0 14px;color:#e6e8df}#od-consent a{color:#5fae2f;text-decoration:underline}#od-consent .r{display:flex;gap:10px;flex-wrap:wrap}#od-consent button{font:inherit;font-weight:800;min-height:46px;padding:10px 20px;border-radius:9px;border:2px solid #5fae2f;cursor:pointer}#od-consent .ok{background:#5fae2f;color:#000}#od-consent .no{background:transparent;color:#fff}';
     document.head.appendChild(st);
     b = document.createElement('div'); b.id = 'od-consent'; b.setAttribute('role', 'dialog'); b.setAttribute('aria-label', 'Témoins');
     var p = document.createElement('p');

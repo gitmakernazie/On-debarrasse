@@ -5,7 +5,7 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="origin">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob: https://lizpwezdfiwgpkdqpfsp.supabase.co https://server.arcgisonline.com; connect-src https://lizpwezdfiwgpkdqpfsp.supabase.co https://nominatim.openstreetmap.org; form-action 'none'; base-uri 'none'">
-<title>On Débarrasse — Gestion des demandes</title>
+<title>BazarVert — Gestion des demandes</title>
 <style>
 /* required styles */
 
@@ -671,8 +671,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 </style>
 <style>
-:root{--ink:#141614;--green:#98e619;--green-d:#527000;--bg:#f3f4f2;--line:#d9ded6;--muted:#555c53;--red:#b3261e;--ease:cubic-bezier(.2,.8,.2,1);
- --c-nouvelle:#98e619;--c-confirmer:#f59e0b;--c-confirmee:#2563eb;--c-terminee:#6b7280;--c-annulee:#dc2626}
+:root{--ink:#141614;--green:#5fae2f;--green-d:#12571c;--bg:#f3f4f2;--line:#d9ded6;--muted:#555c53;--red:#b3261e;--ease:cubic-bezier(.2,.8,.2,1);
+ --c-nouvelle:#5fae2f;--c-confirmer:#f59e0b;--c-confirmee:#2563eb;--c-terminee:#6b7280;--c-annulee:#dc2626}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
@@ -684,16 +684,16 @@ header.top span{color:#c9d0c3;font-size:13px}
 button{min-height:46px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;transition:transform .15s var(--ease),background-color .2s,border-color .2s}
 button:active:not(:disabled){transform:scale(.97)}
 button:disabled{opacity:.55;cursor:default}
-button.primary{background:var(--green);border-color:var(--green);color:var(--ink);box-shadow:0 3px 0 #5b8d08}
-button.primary:active:not(:disabled){box-shadow:0 1px 0 #5b8d08}
+button.primary{background:var(--green);border-color:var(--green);color:var(--ink);box-shadow:0 3px 0 #2f6f1d}
+button.primary:active:not(:disabled){box-shadow:0 1px 0 #2f6f1d}
 button.danger{color:var(--red);border-color:#e6c1be}
 button.ghost{background:transparent;border-color:#4a5148;color:#fff;min-height:38px;padding:0 14px;font-size:14px}
-@media(hover:hover){button:hover:not(:disabled){border-color:#aeb6a6;background:#f7f8f6}button.primary:hover:not(:disabled){background:#a9ef39}}
+@media(hover:hover){button:hover:not(:disabled){border-color:#aeb6a6;background:#f7f8f6}button.primary:hover:not(:disabled){background:#74c03e}}
 a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:700;color:var(--ink);text-decoration:none}
-a.btn.primary{background:var(--green);border-color:var(--green);box-shadow:0 3px 0 #5b8d08}
+a.btn.primary{background:var(--green);border-color:var(--green);box-shadow:0 3px 0 #2f6f1d}
 input,select,textarea{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
 textarea{min-height:96px;resize:vertical}
-input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:none;border-color:var(--green-d);box-shadow:0 0 0 4px #98e61940}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:none;border-color:var(--green-d);box-shadow:0 0 0 4px #5fae2f40}
 label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:0 0 6px}
 main{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
 h1{font-size:30px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
@@ -715,7 +715,7 @@ h1{font-size:30px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
 .tabs button[aria-selected=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .list{display:grid;gap:12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;display:grid;gap:6px;text-align:left;width:100%;min-height:0;font-weight:400;transition:transform .25s var(--ease),box-shadow .25s,border-color .2s}
-@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px #14161430;border-color:#b5d98a}}
+@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px #14161430;border-color:#a9cf9a}}
 .card .row1{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .card .name{font-weight:800;font-size:17px}
 .card .meta{font-size:14px;color:var(--muted)}
@@ -786,7 +786,7 @@ dd{margin:0;overflow-wrap:anywhere}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style><link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"></head>
 <body>
-<header class="top"><strong>On Débarrasse.</strong><span>Gestion des demandes · accès privé</span><button class="ghost" id="logout" hidden>Se déconnecter</button></header>
+<header class="top"><strong>BazarVert.</strong><span>Gestion des demandes · accès privé</span><button class="ghost" id="logout" hidden>Se déconnecter</button></header>
 
 <main>
  <section class="login" id="login">
@@ -858,7 +858,7 @@ const STATUTS = [
 const LABEL = Object.fromEntries(STATUTS);
 /* Groupes de couleurs de la carte */
 const GROUPS = [
- {id:'nouvelle', label:'Nouvelle demande', color:'#98e619', statuts:['nouvelle']},
+ {id:'nouvelle', label:'Nouvelle demande', color:'#5fae2f', statuts:['nouvelle']},
  {id:'confirmer', label:'À confirmer', color:'#f59e0b', statuts:['contactee','soumission_envoyee']},
  {id:'confirmee', label:'Confirmée', color:'#2563eb', statuts:['planifiee']},
  {id:'terminee', label:'Terminée', color:'#6b7280', statuts:['terminee']},
@@ -1048,7 +1048,7 @@ function startMap() {
  if (!map) {
   map = L.map('map', {zoomControl:true}).setView([46.8139, -71.2080], 10);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {maxZoom:19, attribution:'Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors'}).addTo(map);
-  depotCircle = L.circle(DEPOT, {radius:50000, color:'#527000', weight:2, dashArray:'6 6', fillColor:'#98e619', fillOpacity:.06, interactive:false}).addTo(map);
+  depotCircle = L.circle(DEPOT, {radius:50000, color:'#12571c', weight:2, dashArray:'6 6', fillColor:'#5fae2f', fillOpacity:.06, interactive:false}).addTo(map);
   layer = L.layerGroup().addTo(map); mapReady = true;
  }
  locateDepot();
@@ -1128,7 +1128,7 @@ function locateDepot() {
    if (depotCircle) depotCircle.setLatLng(DEPOT);
    if (map) {
     if (depotMarker) depotMarker.remove();
-    depotMarker = L.marker(DEPOT, {icon:L.divIcon({className:'', html:'<span class="pin depot" style="--c:#141614"><i></i><b></b></span>', iconSize:[28,28], iconAnchor:[8,28], popupAnchor:[6,-26]}), title:'Bureau'}).addTo(map).bindPopup('<strong>Bureau — On Débarrasse</strong><br>' + DEPOT_ADDR.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '<br>Centre du rayon de 50 km');
+    depotMarker = L.marker(DEPOT, {icon:L.divIcon({className:'', html:'<span class="pin depot" style="--c:#141614"><i></i><b></b></span>', iconSize:[28,28], iconAnchor:[8,28], popupAnchor:[6,-26]}), title:'Bureau'}).addTo(map).bindPopup('<strong>Bureau — BazarVert</strong><br>' + DEPOT_ADDR.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '<br>Centre du rayon de 50 km');
    }
   }
  })();
