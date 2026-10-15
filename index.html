@@ -506,7 +506,7 @@ main{padding-top:0!important}
 <div aria-label="Coordonnées" class="contact-info"><div class="info-row"><strong>Téléphone</strong><span><a href="tel:+14385212310">438 521-2310</a></span></div><div class="info-row"><strong>Courriel</strong><span><a href="mailto:info@ondebarrasse.ca">info@ondebarrasse.ca</a></span></div><div class="info-row"><strong>Heures de service</strong><span>8 h à 18 h</span></div><div class="info-row"><strong>Zone d’intervention</strong><span>Rayon de 50 km autour de Québec</span></div></div>
 </div></div></section>
 </main>
-<footer class="footer"><div class="wrap footer-inner"><a aria-label="On Débarrasse — accueil" class="footer-logo" href="#accueil"><img alt="On Débarrasse" height="1024" src="logo.webp" width="1536"/></a><p>On Débarrasse · Débarras résidentiel · Québec</p><a class="text-link" href="#accueil">Retour en haut <span aria-hidden="true">↑</span></a></div></footer>
+<footer class="footer"><div class="wrap footer-inner"><a aria-label="On Débarrasse — accueil" class="footer-logo" href="#accueil"><img alt="On Débarrasse" height="1024" src="logo.webp" width="1536"/></a><p>On Débarrasse · Débarras résidentiel · Québec · <a href="politique-confidentialite.html" style="text-decoration:underline">Politique de confidentialité</a></p><a class="text-link" href="#accueil">Retour en haut <span aria-hidden="true">↑</span></a></div></footer>
 <script>
 const menu=document.querySelector('.mobile-nav');
 if(menu){menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.open=false}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.open=false;menu.querySelector('summary').focus()}});document.addEventListener('click',e=>{if(menu.open&&!menu.contains(e.target))menu.open=false});}
@@ -598,5 +598,5 @@ if(menu){menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{m
  els.forEach(function(el){if(el.classList.contains('od-pre'))io.observe(el)});
 })();
 </script>
-</body>
+<script src="suivi.js" defer></script></body>
 </html>
