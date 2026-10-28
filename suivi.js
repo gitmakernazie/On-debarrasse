@@ -1,4 +1,4 @@
-/* BazarVert — suivi des conversions Google Ads, avec consentement.
+/* On Débarrasse Québec — suivi des conversions Google Ads, avec consentement.
    TANT QUE AW_ID EST VIDE : aucun suivi, aucune bannière, aucun témoin, aucune requête.
    Pour activer : remplir AW_ID (ex. 'AW-1234567890') et les étiquettes ci-dessous. */
 (function () {

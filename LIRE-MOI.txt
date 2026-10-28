@@ -1,4 +1,4 @@
-BAZARVERT — site complet (nouvelle identité de marque)
+ON DÉBARRASSE QUÉBEC — site complet (nouvelle identité de marque)
 
 Contenu : index.html (accueil), soumission.html, contact.html, confirmation.html,
 politique-confidentialite.html, gestion.html (tableau de bord privé), suivi.js (suivi Google Ads,
