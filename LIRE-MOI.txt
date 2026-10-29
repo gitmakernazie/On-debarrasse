@@ -12,6 +12,6 @@ Mise en ligne (GitHub -> Vercel) :
    Les fichiers du même nom sont remplacés. Vercel publie automatiquement.
 
 Important :
-- Domaine: bazarvert.ca (DNS Cloudflare + Vercel). Courriel: info@bazarvert.ca (Cloudflare Email Routing). L ancien domaine ondebarrasse.ca peut etre redirige dans Vercel.
+- Domaine: bazarvert.ca (DNS Cloudflare + Vercel). Courriel: info@ondebarrassequebec.ca (Cloudflare Email Routing). L ancien domaine ondebarrasse.ca peut etre redirige dans Vercel.
   (le nouveau domaine n'est pas connu).
 - Les photos des cartes de services (s-*.webp) sont des images temporaires trouvées sur le web.
