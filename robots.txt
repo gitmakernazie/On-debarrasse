@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /gestion
+Disallow: /confirmation.html
+
+Sitemap: https://ondebarrassequebec.ca/sitemap.xml
